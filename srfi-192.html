@@ -82,7 +82,7 @@ necessarily correspond to a byte or character position.
 
 <div><code>(<a name="node_idx_658"></a>set-port-position!<i> port pos</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
 <p>If <i>port</i> is a binary port, it is an error unless <i>pos</i>
-non-negative exact integer.  If <i>port</i> is a textual port,
+is a non-negative exact integer.  If <i>port</i> is a textual port,
 it is implementation-defined what happens if <i>pos</i> is not
  the return value of a call to <code>port-position</code> on <i>port</i>.</p>
 <p>The <code>port-has-set-port-position!?</code> procedure returns <code>#t</code> if the port
