@@ -58,9 +58,9 @@ it is not appropriate for all custom ports to do so.</p>
 
 <h1>Specification</h1>
 
-<div align=left><code>(<a name="node_idx_652"></a>port-has-port-position?<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
+<div><code>(<a name="node_idx_652"></a>port-has-port-position?<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
 
-<div align=left><code>(<a name="node_idx_654"></a>port-position<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
+<div><code>(<a name="node_idx_654"></a>port-position<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
 <p>The <code>port-has-port-position?</code> procedure returns <code>#t</code> if the
 port supports the <code>port-position</code> operation, and <code>#f</code>
 otherwise.</p>
@@ -78,9 +78,9 @@ For a textual port, the port position may or may not be an integer
 object.  If it is an integer, the integer does not
 necessarily correspond to a byte or character position.
 </blockquote>
-<div align=left><code>(<a name="node_idx_656"></a>port-has-set-port-position!?<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
+<div><code>(<a name="node_idx_656"></a>port-has-set-port-position!?<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
 
-<div align=left><code>(<a name="node_idx_658"></a>set-port-position!<i> port pos</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
+<div><code>(<a name="node_idx_658"></a>set-port-position!<i> port pos</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
 <p>If <i>port</i> is a binary port, it is an error unless <i>pos</i>
 non-negative exact integer.  If <i>port</i> is a textual port,
 it is implementation-defined what happens if <i>pos</i> is not
