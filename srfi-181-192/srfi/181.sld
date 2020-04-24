@@ -13,7 +13,7 @@
             (gauche vport)
             (srfi 42))
     (include "181.gauche.scm"))
-   (else   
+   (else
     ;; Actual implementation is provided in srfi/181/generic.scm
     (import (srfi 181 generic)))
    ))

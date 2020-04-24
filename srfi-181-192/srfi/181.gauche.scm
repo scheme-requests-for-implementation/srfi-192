@@ -13,7 +13,7 @@
       (and set-position!
            (cond
             [(eqv? whence SEEK_SET) (set-position! offset)]
-            [(eqv? whence SEEK_CUR) 
+            [(eqv? whence SEEK_CUR)
              (and get-position
                   (set-position! (+ offset (get-position))))]
             [(eqv? whence SEEK_END) #f]            ; unsupportable

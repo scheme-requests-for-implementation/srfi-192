@@ -19,7 +19,7 @@
   ;; prefeched byte / char, for peek-u8/peek-char
   (prefetch custom-port-prefetch custom-port-prefetch-set!)
   ;; saved the current pos before peek-char
-  ;; can be (pos) or #f  
+  ;; can be (pos) or #f
   (prefetch-pos custom-port-prefetch-pos custom-port-prefetch-pos-set!)
   ;; one-element bytevector or vector
   (buf custom-port-buf)
@@ -153,7 +153,7 @@
     (and flusher (flusher))))
 
 (define (make-custom-binary-input-port id read!
-                                       get-position set-position! 
+                                       get-position set-position!
                                        close)
   (%make-custom-port id #t #f #f (make-bytevector 1)
                      read! #f
@@ -163,17 +163,17 @@
                      #f))
 
 (define (make-custom-textual-input-port id read!
-                                        get-position set-position! 
+                                        get-position set-position!
                                         close)
   (%make-custom-port id #f #f #f (make-vector 1)
                      read! #f
-                     get-position 
+                     get-position
                      set-position!
                      close
                      #f))
 
 (define (make-custom-binary-output-port id write!
-                                        get-position set-position! 
+                                        get-position set-position!
                                         close . opts)
   (let ((flush (if (pair? opts) (car opts) #f)))
     (%make-custom-port id #t #f #f (make-bytevector 1)
@@ -184,7 +184,7 @@
                        flush)))
 
 (define (make-custom-textual-output-port id write!
-                                         get-position set-position! 
+                                         get-position set-position!
                                          close . opts)
   (let ((flush (if (pair? opts) (car opts) #f)))
     (%make-custom-port id #f #f #f (make-vector 1)
@@ -195,7 +195,7 @@
                        flush)))
 
 (define (make-custom-binary-input/output-port id read! write!
-                                              get-position set-position! 
+                                              get-position set-position!
                                               close . opts)
   (let ((flush (if (pair? opts) (car opts) #f)))
     (%make-custom-port id #t #f #f (make-bytevector 1)

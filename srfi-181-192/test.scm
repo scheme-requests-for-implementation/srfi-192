@@ -27,7 +27,7 @@
 (import (srfi 192))
 
 (cond-expand
- (chibi 
+ (chibi
   ;; adapt srfi-64 macros to (chibi test)
   (define-syntax test-equal
     (syntax-rules ()
@@ -41,13 +41,13 @@
 
 (test-begin "srfi-181-192-test")
 
-(test-group 
+(test-group
  "Binary input, no port positioning"
  (define data (apply bytevector
                      (list-tabulate 1000 (lambda (i) (modulo i 256)))))
  (define pos 0)
  (define closed #f)
- (define p (make-custom-binary-input-port 
+ (define p (make-custom-binary-input-port
             "binary-input"
             (lambda (buf start count)   ; read!
               (let ((size (min count (- (bytevector-length data) pos))))
@@ -62,7 +62,7 @@
  (test-assert "not output port?" (not (output-port? p)))
  (test-assert "not has position?" (not (port-has-port-position? p)))
  (test-assert "not set position?" (not (port-has-set-port-position!? p)))
- 
+
  (test-eqv 0 (read-u8 p))
  (test-eqv 1 (read-u8 p))
  (test-eqv 2 (peek-u8 p))
@@ -71,7 +71,7 @@
  (test-equal (bytevector-copy data 3)
              (read-bytevector 997 p))
  (test-equal (eof-object) (read-u8 p))
- 
+
  (test-assert "close" (begin (close-port p)
                              closed))
  )
@@ -83,7 +83,7 @@
  (define pos 0)
  (define saved-pos #f)
  (define closed #f)
- (define p (make-custom-binary-input-port 
+ (define p (make-custom-binary-input-port
             "binary-input"
             (lambda (buf start count)   ; read!
               (let ((size (min count (- (bytevector-length data) pos))))
@@ -99,7 +99,7 @@
  (test-assert "not output port?" (not (output-port? p)))
  (test-assert "has position?" (port-has-port-position? p))
  (test-assert "set position?" (port-has-set-port-position!? p))
- 
+
  (test-eqv 0 (read-u8 p))
  (test-eqv 1 (read-u8 p))
  (test-eqv 2 (peek-u8 p))
@@ -109,7 +109,7 @@
  (test-equal (bytevector-copy data 3)
              (read-bytevector 997 p))
  (test-equal (eof-object) (read-u8 p))
- 
+
  (set-port-position! p saved-pos)
  (test-eqv 2 (read-u8 p))
 
@@ -119,7 +119,7 @@
 
 (test-group
  "Textual input, no port positioning"
- (define data (string-tabulate (lambda (i) 
+ (define data (string-tabulate (lambda (i)
                                  (integer->char
                                   (cond-expand
                                    (full-unicode (+ #x3000 i))
@@ -127,7 +127,7 @@
                                1000))
  (define pos 0)
  (define closed #f)
- (define p (make-custom-textual-input-port 
+ (define p (make-custom-textual-input-port
             "textual-input"
             (lambda (buf start count)   ; read!
               (let ((size (min count (- (string-length data) pos))))
@@ -148,7 +148,7 @@
  (test-assert "not output port?" (not (output-port? p)))
  (test-assert "not has position?" (not (port-has-port-position? p)))
  (test-assert "not set position?" (not (port-has-set-port-position!? p)))
- 
+
  (test-eqv (string-ref data 0) (read-char p))
  (test-eqv (string-ref data 1) (read-char p))
  (test-eqv (string-ref data 2) (peek-char p))
@@ -164,7 +164,7 @@
 
 (test-group
  "Textual input, port positioning"
- (define data (string-tabulate (lambda (i) 
+ (define data (string-tabulate (lambda (i)
                                  (integer->char
                                   (cond-expand
                                    (full-unicode (+ #x3000 i))
@@ -173,7 +173,7 @@
  (define pos 0)
  (define saved-pos #f)
  (define closed #f)
- (define p (make-custom-textual-input-port 
+ (define p (make-custom-textual-input-port
             "textual-input"
             (lambda (buf start count)   ; read!
               (let ((size (min count (- (string-length data) pos))))
@@ -194,7 +194,7 @@
  (test-assert (not (output-port? p)))
  (test-assert (port-has-port-position? p))
  (test-assert (port-has-set-port-position!? p))
- 
+
  (test-eqv (string-ref data 0) (read-char p))
  (test-eqv (string-ref data 1) (read-char p))
  (test-eqv (string-ref data 2) (peek-char p))
@@ -208,12 +208,12 @@
 
  (set-port-position! p saved-pos)
  (test-eqv (string-ref data 2) (peek-char p))
- 
+
  (test-assert (begin (close-port p)
                      closed))
  )
 
-(test-group 
+(test-group
  "Binary output, port positioning"
  (define data (apply bytevector
                      (list-tabulate 1000 (lambda (i) (modulo i 256)))))
@@ -240,7 +240,7 @@
  (test-assert "output port?" (output-port? p))
  (test-assert "has position?" (port-has-port-position? p))
  (test-assert "set position?" (port-has-set-port-position!? p))
- 
+
  (write-u8 3 p)
  (write-u8 1 p)
  (write-u8 4 p)
@@ -328,7 +328,7 @@
 (cond-expand
  (gauche)
  (else
-(test-group 
+(test-group
  "binary input/output"
  (define data (apply bytevector
                      (list-tabulate 1000 (lambda (i) (modulo i 256)))))
@@ -387,11 +387,11 @@
  (test-eqv "overwritten" 4 (read-u8 p))
  )
 
-(test-group 
+(test-group
  "textual input/output"
  (define data (apply vector
                      (list-tabulate 1000 (lambda (i)
-                                           (integer->char 
+                                           (integer->char
                                             (+ 256 (modulo i 256)))))))
  (define original-size 500)             ;writing may extend the size
  (define pos 0)
@@ -449,9 +449,9 @@
 
 )) ; cond expand
 
-(test-group 
+(test-group
  "high-level i/o"
- (define source 
+ (define source
    (let ((orig "((a b c . d)
                   (a . (b . (c . (d . ()))))
                   #(a b c d)

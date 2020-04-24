@@ -18,5 +18,5 @@
 (define (set-port-position! port pos)
   (assume (port? port))
   (port-seek port pos))
-  
+
 

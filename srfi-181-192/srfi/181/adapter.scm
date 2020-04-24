@@ -44,14 +44,14 @@
         ((output-port? obj) (flush-output-port obj))
         (else (error "output port expected, got" obj))))
 
-(define cp:read-char 
+(define cp:read-char
   (case-lambda
     (() (cp:read-char (current-input-port)))
     ((port) (cond ((custom-input-port? port) (custom-port-read-char port))
                   ((input-port? port) (read-char port))
                   (else (error "input port expected, got" port))))))
 
-(define cp:peek-char 
+(define cp:peek-char
   (case-lambda
     (() (cp:peek-char (current-input-port)))
     ((port) (cond ((custom-input-port? port) (custom-port-peek-char port))
@@ -109,7 +109,7 @@
 ;;; Derived operations
 ;;;
 
-(define cp:read-line 
+(define cp:read-line
   (case-lambda
     (() (cp:read-line (current-input-port)))
     ((port)
@@ -255,10 +255,10 @@
             ((eqv? #\# ch)
              (let ((c2 (deposit (cp:read-char p))))
                (cond ((eof-object? c2))
-                     ((eqv? c2 #\\) 
+                     ((eqv? c2 #\\)
                       (let ((c3 (deposit (cp:read-char p))))
                         (unless (eof-object? c3)
-                          (skip-token) 
+                          (skip-token)
                           (when closer (rec closer)))))
                      ((eqv? c2 #\,) (rec closer)) ; srfi-10
                      ((eqv? c2 #\() (rec #\)) (when closer (rec closer))) ;vector
@@ -284,7 +284,7 @@
         (memv ch '(#\" #\' #\( #\) #\, #\; #\[ #\\ #\] #\` #\{ #\| #\} #\x7f))))
 
   (define (deposit ch) (when (char? ch) (write-char ch buf)) ch)
-  
+
   (define (skip-ws)
     (let loop ((ch (cp:peek-char p)))
       (unless (or (eof-object? ch)
