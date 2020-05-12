@@ -81,8 +81,8 @@ even supported on the port (see below).</p>
 <p>If the port does not support the operation, <code>port-position</code> signals
 an error.</p>
 <blockquote><em>Note:<span style="margin-left: .5em">&zwnj;</span></em>
-For a textual port, the port position may or may not be an integer
-object.  If it is an integer, the integer does not
+For a textual port, the port position may or may not be an integer.
+If it is an integer, the integer does not
 necessarily correspond to a byte or character position.
 </blockquote>
 <div><code>(<a name="node_idx_656"></a>port-has-set-port-position!?<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
@@ -101,7 +101,8 @@ or if <i>pos</i> is not in the range of valid positions of <i>port</i>,
 <code>set-port-position!</code> signals an error.
 Otherwise, it sets the current position
 of the port to <i>pos</i>.  If <i>port</i> is an output
-port, <code>set-port-position!</code> first flushes <i>port</i>.
+port, <code>set-port-position!</code> first flushes <i>port</i>
+(even if the port position will not change).
 <p>If <i>port</i> is a binary output port and the current position is set
 beyond the current end of the data in the underlying data sink, the object is
 not extended until new data is written at that position.
@@ -133,9 +134,21 @@ who produced a good-enough (as opposed to perfect) design that John
 was happy to adopt.</p>
 
 <h1>Copyright</h1>
-Copyright &copy; John Cowan (2020).
+John Cowan does not claim copyright on his <i>de minimis</i> contributions
+to this SRFI.  Its content is drawn almost entirely from R6RS,
+which does not have a copyright notice.
+It does, however, contain the following copyright license:</p>
 
-<p>Permission is hereby granted, free of charge, to any person
+<blockquote>
+We intend this report to belong to the entire Scheme community, and so we grant permission to copy it in whole or in
+part without fee.
+</blockquote>
+
+<p>Nevertheless, in order to keep the lawyers happy, the standard
+SRFI license is subjoined:</p>
+
+<blockquote>
+  Permission is hereby granted, free of charge, to any person
   obtaining a copy of this software and associated documentation files
   (the "Software"), to deal in the Software without restriction,
   including without limitation the rights to use, copy, modify, merge,
@@ -143,18 +156,19 @@ Copyright &copy; John Cowan (2020).
   and to permit persons to whom the Software is furnished to do so,
   subject to the following conditions:
 
-<p>The above copyright notice and this permission notice (including the
+<p>
+  The above copyright notice and this permission notice (including the
   next paragraph) shall be included in all copies or substantial
-  portions of the Software.</p>
-
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  portions of the Software.
+<p>
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
   NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.</p>
-
+  SOFTWARE.
+</blockquote>
   <hr>
   <address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org">Arthur A. Gleckler</a></address></body></html>
