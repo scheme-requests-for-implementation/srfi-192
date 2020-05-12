@@ -6,6 +6,8 @@ Based on R6RS.
 
 
 
+keywords: [[https://srfi.schemers.org/?keywords=i/o][I/O]]
+
 This repository hosts [[https://srfi.schemers.org/srfi-192/][SRFI 192]]: Port Positioning, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
 This SRFI is in /draft/ status.
