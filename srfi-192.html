@@ -50,17 +50,15 @@ of a file, or to append to it (though in the presence of multiple writers,
 this technique for appending is not reliable).  While these abilities are
 not as important as they once were, they still have their uses.</p>
 
-<p>Note that the transcoded ports of
-<a href="https://srfi.schemers.org/srfi-186/srfi-186.html">
-SRFI 186</a> do not always support the <code>port-position</code> and
+<p>Note that transcoded ports
+do not always support the <code>port-position</code> and
 <code>set-port-position!</code> operations.
 The position of a transcoded port may not be well-defined,
 and may be hard to calculate even when defined,
 especially when transcoding operations are done in bulk.</p>
 
-<p>Similarly, although the custom ports of
-<a href="https://srfi.schemers.org/srfi-181/srfi-181.html">
-SRFI 181</a> have provisions for supporting port positioning,
+<p>Similarly, although custom ports
+have provisions for supporting port positioning,
 it is not appropriate for all custom ports to do so.</p>
 
 <h1>Specification</h1>
