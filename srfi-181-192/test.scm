@@ -448,12 +448,23 @@
 
 (test-group
  "transcoded input"
+ ;; This test assumes native transcoder supports ascii range
+ (test-equal "native" "ABCD"
+             (bytevector->string '#u8(#x41 #x42 #x43 #x44)
+                                 (native-transcoder)))
  (test-equal "latin1 -> ascii" "ABC???XYZ???"
              (bytevector->string '#u8(#x41 #x42 #x43 #xa1 #xa2 #xa3
                                       #x58 #x59 #x5a #xc1 #xc2 #xc3)
                                  (make-transcoder (latin-1-codec)
                                                   (native-eol-style)
                                                   'replace)))
+ (test-assert "latin1 raise"
+              (guard (e ((i/o-decoding-error? e)))
+                (bytevector->string '#u8(#xc1)
+                                    (make-transcoder (latin-1-codec)
+                                                     (native-eol-style)
+                                                     'raise))
+                #f))
  (test-equal "utf-16 (bom, be) -> ascii" "AB??CD"
              (bytevector->string '#u8(#xfe #xff #x00 #x41 #x00 #x42
                                       #x30 #x00 #x00 #xc1 #x00 #x43 #x00 #x44)
@@ -493,12 +504,15 @@
 
 (test-group
  "transcoded output"
+ ;; This test assumes native transcoder supports ascii range
+ (test-equal "native" '#u8(#x41 #x42 #x43 #x44)
+             (string->bytevector "ABCD"
+                                 (native-transcoder)))
  (test-equal "ascii -> latin1" #u8(#x41 #x42 #x43 #x44)
              (string->bytevector "ABCD"
                                  (make-transcoder (latin-1-codec)
                                                   (native-eol-style)
                                                   'raise)))
-
  (test-equal "ascii -> utf-16" #f
              (not
               (member

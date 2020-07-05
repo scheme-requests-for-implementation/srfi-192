@@ -19,7 +19,8 @@
             (gauche base)
             (gauche uvector)
             (gauche vport)
-            (srfi 42))
+            (srfi 42)
+            (srfi 181 transcoder))
     (include "181.gauche.scm"))
    (else
     ;; Actual implementation is provided in srfi/181/generic.scm

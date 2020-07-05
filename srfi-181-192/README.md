@@ -11,7 +11,7 @@ read) and (scheme write) so that they can accept custom ports.
 
 To run tests, load test.scm.
 
-   Gauche:    gosh -I. ./test.scm
+   Gauche:    gosh -I. ./test.scm   (fails 1 test, due to Gauche's vport feature)
    Chibi:     chibi-scheme -I. ./test.scm
 
 Reference implementation of Gauche is also provided, using its own
@@ -27,3 +27,13 @@ and 'read-line', so at least the custom textual port needs to have some
 sort of peek functionality internally, even if it doesn't export the feature.
 
 For now, I keep them in the library.
+
+
+Note on transcoded port implementation
+--------------------------------------
+
+The reference implementation of transcoded ports assumes internal (native)
+encoding is ASCII.  This allows any Scheme implementation to try it out,
+but certain code paths are not tested (e.g. no character can raise
+i/o-encoding-error.   You can still use tests, but you may want to enhance
+it to test transcoding characters out of ASCII range.

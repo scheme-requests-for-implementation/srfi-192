@@ -14,7 +14,7 @@
 (define-record-type i/o-encoding-error
   (make-i/o-encoding-error char message)
   i/o-encoding-error?
-  (message i/o-decoding-error-message)
+  (message i/o-encoding-error-message)
   (char i/o-encoding-error-char))
 
 (define-record-type codec
@@ -51,7 +51,6 @@
 (define (latin-1-codec) *latin-1-codec*)
 (define (utf-8-codec) *utf-8-codec*)
 (define (utf-16-codec) *utf-16-codec*)
-(define (native-transcoder) *ascii-codec*)
 
 (define-record-type transcoder
   (%make-transcoder codec eol-style handling-mode)
@@ -71,8 +70,10 @@
            handling-mode))
   (%make-transcoder codec eol-style handling-mode))
 
-
 (define (native-eol-style) 'lf)
+
+(define (native-transcoder)
+  (make-transcoder *ascii-codec* (native-eol-style) 'replace))
 
 ;; actual transcoding
 
@@ -199,7 +200,7 @@
     (cond
      ((input-port? inner)
       (case (codec-name (transcoder-codec transcoder))
-        ((latin-1 utf-8)
+        ((ascii latin-1 utf-8)
          (make-custom-textual-input-port (port-id)
                                          (make-u8-ascii-read! inner eol handling)
                                          #f #f closer))
@@ -209,7 +210,7 @@
                                          #f #f closer))))
      ((output-port? inner)
       (case (codec-name (transcoder-codec transcoder))
-        ((latin-1 utf-8)
+        ((ascii latin-1 utf-8)
          (make-custom-textual-output-port (port-id)
                                           (make-u8-ascii-write! inner eol handling)
                                           #f #f closer))
