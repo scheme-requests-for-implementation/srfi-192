@@ -387,66 +387,6 @@
  (test-eqv "overwritten" 4 (read-u8 p))
  )
 
-(test-group
- "textual input/output"
- (define data (apply vector
-                     (list-tabulate 1000 (lambda (i)
-                                           (integer->char
-                                            (+ 256 (modulo i 256)))))))
- (define original-size 500)             ;writing may extend the size
- (define pos 0)
- (define saved-pos #f)
- (define flushed #f)
- (define closed #f)
- (define p (make-custom-textual-input/output-port
-            "textual i/o"
-            (lambda (buf start count)   ; read!
-              (let ((size (min count (- original-size pos))))
-                (vector-copy! buf start data pos (+ pos size))
-                (set! pos (+ pos size))
-                size))
-            (lambda (buf start count)   ;write!
-              (let ((size (min count (- (vector-length data) pos))))
-                (vector-copy! data pos buf start (+ start size))
-                (set! pos (+ pos size))
-                (set! original-size (max original-size pos))
-                size))
-            (lambda () pos)             ;get-position
-            (lambda (k) (set! pos k))   ;set-position!
-            (lambda () (set! closed #t)) ; close
-            (lambda () (set! flushed #t)) ; flush
-            ))
- (test-assert "port?" (port? p))
- (test-assert "input?" (input-port? p))
- (test-assert "output?" (output-port? p))
- (test-assert "has position?" (port-has-port-position? p))
- (test-assert "set position?" (port-has-set-port-position!? p))
-
- (test-eqv (vector-ref data 0) (read-char p))
- (test-eqv (vector-ref data 1) (read-char p))
- (test-eqv (vector-ref data 2) (read-char p))
- (set! saved-pos (port-position p))
- (test-equal "rest of input"
-             (vector-copy data 3 original-size)
-             (string->vector (read-string 1000 p)))
- (write-string "abc" p)
- (test-equal "appended" '#(#\a #\b #\c)
-             (vector-copy data 500 503))
- (write-char #\d p)
- (test-equal "appended more" '#(#\a #\b #\c #\d)
-             (vector-copy data 500 504))
- (test-eqv "still eof" (eof-object) (read-char p))
-
-              (display ">> " (current-error-port))
-              (write saved-pos (current-error-port))
-              (newline (current-error-port))
- (set-port-position! p saved-pos)
- (test-eqv "rewind & peek" #\ă (peek-char p))
- (write-char #\Z p)
- (set-port-position! p saved-pos)
- (test-eqv "overwritten" #\Z (read-char p))
- )
-
 )) ; cond expand
 
 (test-group
@@ -504,6 +444,16 @@
  (let ((p (open-input-string (get-output-string sink))))
    (test-equal "written expr 1" data (read p))
    (test-equal "written expr 2" data (read p)))
+ )
+
+(test-group
+ "transcoded input"
+ (test-equal "latin1 -> ascii" "ABC???XYZ???"
+             (bytevector->string #u8(#x41 #x42 #x43 #xa1 #xa2 #xa3
+                                     #x58 #x59 #x5a #xc1 #xc2 #xc3)
+                                 (make-transcoder (latin-1-codec)
+                                                  (native-eol-style)
+                                                  'replace)))
  )
 
 (test-end  "srfi-181-192-test")
