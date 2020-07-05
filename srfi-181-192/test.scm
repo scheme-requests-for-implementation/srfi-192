@@ -449,11 +449,79 @@
 (test-group
  "transcoded input"
  (test-equal "latin1 -> ascii" "ABC???XYZ???"
-             (bytevector->string #u8(#x41 #x42 #x43 #xa1 #xa2 #xa3
-                                     #x58 #x59 #x5a #xc1 #xc2 #xc3)
+             (bytevector->string '#u8(#x41 #x42 #x43 #xa1 #xa2 #xa3
+                                      #x58 #x59 #x5a #xc1 #xc2 #xc3)
                                  (make-transcoder (latin-1-codec)
                                                   (native-eol-style)
                                                   'replace)))
+ (test-equal "utf-16 (bom, be) -> ascii" "AB??CD"
+             (bytevector->string '#u8(#xfe #xff #x00 #x41 #x00 #x42
+                                      #x30 #x00 #x00 #xc1 #x00 #x43 #x00 #x44)
+                                 (make-transcoder (utf-16-codec)
+                                                  (native-eol-style)
+                                                  'replace)))
+ (test-equal "utf-16 (bom, le) -> ascii" "AB??CD"
+             (bytevector->string '#u8(#xff #xfe #x41 #x00 #x42 #x00
+                                      #x00 #x30 #xc1 #x00 #x43 #x00 #x44 #x00)
+                                 (make-transcoder (utf-16-codec)
+                                                  (native-eol-style)
+                                                  'replace)))
+ (test-equal "utf-16 (native) -> ascii" "AB??CD"
+             (bytevector->string 
+              (if (equal? (bytevector->string '#u8(#x00 #x41)
+                                              (make-transcoder (utf-16-codec)
+                                                               (native-eol-style)
+                                                               'replace))
+                          "A")
+                '#u8(#x00 #x41 #x00 #x42 #x30 #x00 #x00 #xc1 #x00 #x43 #x00 #x44)
+                '#u8(#x41 #x00 #x42 #x00 #x00 #x30 #xc1 #x00 #x43 #x00 #x44 #x00))
+              (make-transcoder (utf-16-codec)
+                               (native-eol-style)
+                               'replace)))
+
+ (test-equal "eol-style none, lf, crlf" '("A\nB\rC\r\nD"
+                                          "A\nB\nC\nD"
+                                          "A\nB\nC\nD")
+             (map
+              (lambda (style)
+                (bytevector->string #u8(#x41 #x0a #x42 #x0d #x43 #x0d #x0a #x44)
+                                    (make-transcoder (latin-1-codec)
+                                                     style
+                                                     'raise)))
+              '(none lf crlf)))
+ )
+
+(test-group
+ "transcoded output"
+ (test-equal "ascii -> latin1" #u8(#x41 #x42 #x43 #x44)
+             (string->bytevector "ABCD"
+                                 (make-transcoder (latin-1-codec)
+                                                  (native-eol-style)
+                                                  'raise)))
+
+ (test-equal "ascii -> utf-16" #f
+             (not
+              (member
+               (string->bytevector "ABCD"
+                                   (make-transcoder (utf-16-codec)
+                                                    (native-eol-style)
+                                                    'raise))
+               '(#u8(#x00 #x41 #x00 #x42 #x00 #x43 #x00 #x44)
+                 #u8(#x41 #x00 #x42 #x00 #x43 #x00 #x44 #x00)
+                 #u8(#xfe #xff #x00 #x41 #x00 #x42 #x00 #x43 #x00 #x44)
+                 #u8(#xff #xfe #x41 #x00 #x42 #x00 #x43 #x00 #x44 #x00)))))
+
+ (test-equal "eol-style none, lf, crlf"
+             '(#u8(#x41 #x0a #x42 #x0d #x43 #x0d #x0a #x44 #x0d #x0d #x0a)
+               #u8(#x41 #x0a #x42 #x0a #x43 #x0a #x44 #x0a #x0a)
+               #u8(#x41 #x0d #x0a #x42 #x0d #x0a #x43 #x0d #x0a #x44 #x0d #x0a #x0d #x0a))
+             (map
+              (lambda (style)
+                (string->bytevector "A\nB\rC\r\nD\r\r\n"
+                                    (make-transcoder (latin-1-codec)
+                                                     style
+                                                     'raise)))
+              '(none lf crlf)))
  )
 
 (test-end  "srfi-181-192-test")
