@@ -8,6 +8,19 @@ intends to illustrate details.
 Portable R7RS implementation includes an auxiliary library, (srfi 181
 adapter), which replaces I/O procedures in (scheme base), (scheme
 read) and (scheme write) so that they can accept custom ports.
+That is, you can say as follows to use custom ports as if it is another
+kind of ports:
+
+   (import (except (scheme base)
+                   input-port? output-port? textual-port? binary-port?
+                   port? close-port close-input-port close-output-port
+                   read-char peek-char read-line char-ready?
+                   read-string read-u8 peek-u8 u8-ready?
+                   read-bytevector read-bytevector!
+                   write-char write-string write-u8
+                   write-bytevector flush-output-port)
+           (srfi 181 adapter)   ;; includes read and write
+           (srfi 181))
 
 To run tests, load test.scm.
 
