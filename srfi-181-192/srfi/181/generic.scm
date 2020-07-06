@@ -204,14 +204,3 @@
                        set-position!
                        close
                        flush)))
-
-(define (make-custom-textual-input/output-port id read! write!
-                                               get-position set-position!
-                                               close . opts)
-  (let ((flush (if (pair? opts) (car opts) #f)))
-    (%make-custom-port id #f #f #f (make-vector 1)
-                       read! write!
-                       get-position
-                       set-position!
-                       close
-                       flush)))

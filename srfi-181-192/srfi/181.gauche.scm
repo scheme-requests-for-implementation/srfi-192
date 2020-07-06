@@ -8,7 +8,7 @@
 
 (define (make-seeker get-position set-position!)
   (^[offset whence]
-    (if (and (= offset 0) (eq? whence 'SEEK_CUR))
+    (if (and (= offset 0) (eq? whence SEEK_CUR))
       (and get-position (get-position))
       (and set-position!
            (cond

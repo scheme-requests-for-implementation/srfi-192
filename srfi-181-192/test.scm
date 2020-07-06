@@ -387,66 +387,6 @@
  (test-eqv "overwritten" 4 (read-u8 p))
  )
 
-(test-group
- "textual input/output"
- (define data (apply vector
-                     (list-tabulate 1000 (lambda (i)
-                                           (integer->char
-                                            (+ 256 (modulo i 256)))))))
- (define original-size 500)             ;writing may extend the size
- (define pos 0)
- (define saved-pos #f)
- (define flushed #f)
- (define closed #f)
- (define p (make-custom-textual-input/output-port
-            "textual i/o"
-            (lambda (buf start count)   ; read!
-              (let ((size (min count (- original-size pos))))
-                (vector-copy! buf start data pos (+ pos size))
-                (set! pos (+ pos size))
-                size))
-            (lambda (buf start count)   ;write!
-              (let ((size (min count (- (vector-length data) pos))))
-                (vector-copy! data pos buf start (+ start size))
-                (set! pos (+ pos size))
-                (set! original-size (max original-size pos))
-                size))
-            (lambda () pos)             ;get-position
-            (lambda (k) (set! pos k))   ;set-position!
-            (lambda () (set! closed #t)) ; close
-            (lambda () (set! flushed #t)) ; flush
-            ))
- (test-assert "port?" (port? p))
- (test-assert "input?" (input-port? p))
- (test-assert "output?" (output-port? p))
- (test-assert "has position?" (port-has-port-position? p))
- (test-assert "set position?" (port-has-set-port-position!? p))
-
- (test-eqv (vector-ref data 0) (read-char p))
- (test-eqv (vector-ref data 1) (read-char p))
- (test-eqv (vector-ref data 2) (read-char p))
- (set! saved-pos (port-position p))
- (test-equal "rest of input"
-             (vector-copy data 3 original-size)
-             (string->vector (read-string 1000 p)))
- (write-string "abc" p)
- (test-equal "appended" '#(#\a #\b #\c)
-             (vector-copy data 500 503))
- (write-char #\d p)
- (test-equal "appended more" '#(#\a #\b #\c #\d)
-             (vector-copy data 500 504))
- (test-eqv "still eof" (eof-object) (read-char p))
-
-              (display ">> " (current-error-port))
-              (write saved-pos (current-error-port))
-              (newline (current-error-port))
- (set-port-position! p saved-pos)
- (test-eqv "rewind & peek" #\ă (peek-char p))
- (write-char #\Z p)
- (set-port-position! p saved-pos)
- (test-eqv "overwritten" #\Z (read-char p))
- )
-
 )) ; cond expand
 
 (test-group
@@ -504,6 +444,98 @@
  (let ((p (open-input-string (get-output-string sink))))
    (test-equal "written expr 1" data (read p))
    (test-equal "written expr 2" data (read p)))
+ )
+
+(test-group
+ "transcoded input"
+ ;; This test assumes native transcoder supports ascii range
+ (test-equal "native" "ABCD"
+             (bytevector->string '#u8(#x41 #x42 #x43 #x44)
+                                 (native-transcoder)))
+ (test-equal "latin1 -> ascii" "ABC???XYZ???"
+             (bytevector->string '#u8(#x41 #x42 #x43 #xa1 #xa2 #xa3
+                                      #x58 #x59 #x5a #xc1 #xc2 #xc3)
+                                 (make-transcoder (latin-1-codec)
+                                                  (native-eol-style)
+                                                  'replace)))
+ (test-assert "latin1 raise"
+              (guard (e ((i/o-decoding-error? e)))
+                (bytevector->string '#u8(#xc1)
+                                    (make-transcoder (latin-1-codec)
+                                                     (native-eol-style)
+                                                     'raise))
+                #f))
+ (test-equal "utf-16 (bom, be) -> ascii" "AB??CD"
+             (bytevector->string '#u8(#xfe #xff #x00 #x41 #x00 #x42
+                                      #x30 #x00 #x00 #xc1 #x00 #x43 #x00 #x44)
+                                 (make-transcoder (utf-16-codec)
+                                                  (native-eol-style)
+                                                  'replace)))
+ (test-equal "utf-16 (bom, le) -> ascii" "AB??CD"
+             (bytevector->string '#u8(#xff #xfe #x41 #x00 #x42 #x00
+                                      #x00 #x30 #xc1 #x00 #x43 #x00 #x44 #x00)
+                                 (make-transcoder (utf-16-codec)
+                                                  (native-eol-style)
+                                                  'replace)))
+ (test-equal "utf-16 (native) -> ascii" "AB??CD"
+             (bytevector->string 
+              (if (equal? (bytevector->string '#u8(#x00 #x41)
+                                              (make-transcoder (utf-16-codec)
+                                                               (native-eol-style)
+                                                               'replace))
+                          "A")
+                '#u8(#x00 #x41 #x00 #x42 #x30 #x00 #x00 #xc1 #x00 #x43 #x00 #x44)
+                '#u8(#x41 #x00 #x42 #x00 #x00 #x30 #xc1 #x00 #x43 #x00 #x44 #x00))
+              (make-transcoder (utf-16-codec)
+                               (native-eol-style)
+                               'replace)))
+
+ (test-equal "eol-style none, lf, crlf" '("A\nB\rC\r\nD"
+                                          "A\nB\nC\nD"
+                                          "A\nB\nC\nD")
+             (map
+              (lambda (style)
+                (bytevector->string #u8(#x41 #x0a #x42 #x0d #x43 #x0d #x0a #x44)
+                                    (make-transcoder (latin-1-codec)
+                                                     style
+                                                     'raise)))
+              '(none lf crlf)))
+ )
+
+(test-group
+ "transcoded output"
+ ;; This test assumes native transcoder supports ascii range
+ (test-equal "native" '#u8(#x41 #x42 #x43 #x44)
+             (string->bytevector "ABCD"
+                                 (native-transcoder)))
+ (test-equal "ascii -> latin1" #u8(#x41 #x42 #x43 #x44)
+             (string->bytevector "ABCD"
+                                 (make-transcoder (latin-1-codec)
+                                                  (native-eol-style)
+                                                  'raise)))
+ (test-equal "ascii -> utf-16" #f
+             (not
+              (member
+               (string->bytevector "ABCD"
+                                   (make-transcoder (utf-16-codec)
+                                                    (native-eol-style)
+                                                    'raise))
+               '(#u8(#x00 #x41 #x00 #x42 #x00 #x43 #x00 #x44)
+                 #u8(#x41 #x00 #x42 #x00 #x43 #x00 #x44 #x00)
+                 #u8(#xfe #xff #x00 #x41 #x00 #x42 #x00 #x43 #x00 #x44)
+                 #u8(#xff #xfe #x41 #x00 #x42 #x00 #x43 #x00 #x44 #x00)))))
+
+ (test-equal "eol-style none, lf, crlf"
+             '(#u8(#x41 #x0a #x42 #x0d #x43 #x0d #x0a #x44 #x0d #x0d #x0a)
+               #u8(#x41 #x0a #x42 #x0a #x43 #x0a #x44 #x0a #x0a)
+               #u8(#x41 #x0d #x0a #x42 #x0d #x0a #x43 #x0d #x0a #x44 #x0d #x0a #x0d #x0a))
+             (map
+              (lambda (style)
+                (string->bytevector "A\nB\rC\r\nD\r\r\n"
+                                    (make-transcoder (latin-1-codec)
+                                                     style
+                                                     'raise)))
+              '(none lf crlf)))
  )
 
 (test-end  "srfi-181-192-test")
