@@ -2,7 +2,7 @@
 ;;; Generic transcoded port
 ;;;
 ;;; This implementation assumes the internal encoding is ASCII-only.
-;;; 
+;;;
 ;;; MIT License.  See COPYING
 
 ;; supporting parts
@@ -28,7 +28,7 @@
               "ansi_x3.4-1968" "ansi_x3.4-1986" "iso-646.irv:1991"
               "iso-646-us" "us" "ibm367" "cp367" "csascii")
     (latin-1  "latin-1" "iso-8859-1:1987" "iso-8859-1" "iso-ir-100"
-              "iso_8859-1" "latin1" "l1" "ibm819" "cp819" 
+              "iso_8859-1" "latin1" "l1" "ibm819" "cp819"
               "csisolatin1")
     (utf-8    "utf-8" "csutf8")
     (utf-16   "utf-16" "csutf16"))
@@ -88,7 +88,7 @@
             k
             (begin
               ((if (string? buf) string-set! vector-set!) buf i c)
-              (loop (+ i 1) (+ k 1)))))))))  
+              (loop (+ i 1) (+ k 1)))))))))
 
 ;; read latin-1 or utf-8 source into ascii.
 (define (make-u8-ascii-read! source eol-style handling)

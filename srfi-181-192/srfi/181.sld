@@ -12,7 +12,7 @@
           make-transcoder native-transcoder
           transcoded-port
           bytevector->string string->bytevector)
-          
+
   (cond-expand
    (gauche
     (import (scheme base)

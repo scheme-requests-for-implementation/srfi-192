@@ -478,7 +478,7 @@
                                                   (native-eol-style)
                                                   'replace)))
  (test-equal "utf-16 (native) -> ascii" "AB??CD"
-             (bytevector->string 
+             (bytevector->string
               (if (equal? (bytevector->string '#u8(#x00 #x41)
                                               (make-transcoder (utf-16-codec)
                                                                (native-eol-style)
