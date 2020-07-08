@@ -64,28 +64,36 @@ it is not appropriate for all custom ports to do so.</p>
 
 <h1>Specification</h1>
 
-<div><code>(<a name="node_idx_652"></a>port-has-port-position?<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
+<div><code>(<a name="node_idx_652"></a>port-has-port-position?<i> port</i>)</code>
 
-<div><code>(<a name="node_idx_654"></a>port-position<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
+<div><code>(<a name="node_idx_654"></a>port-position<i> port</i>)</code>
 <p>The <code>port-has-port-position?</code> procedure returns <code>#t</code> if the
 port supports the <code>port-position</code> operation, and <code>#f</code>
-otherwise.</p>
-<p>For a binary port, the <code>port-position</code> procedure returns the index
-of the position at which the next byte would be read from or written
-to the port as an exact non-negative integer.  For a textual
-port, <code>port-position</code> returns some implementation-dependent
-object representing the port's position; this value may be useful only as
-the <i>pos</i> argument to <code>set-port-position!</code>, if the latter is
-even supported on the port (see below).</p>
-<p>If the port does not support the operation, <code>port-position</code> signals
+otherwise.  If the port does not support the operation, <code>port-position</code> signals
 an error.</p>
-<div><code>(<a name="node_idx_656"></a>port-has-set-port-position!?<i> port</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
+<p>The <code>port-position</code> procedure returns some implementation-dependent
+object representing as much of the state of the port at its current position
+as is necessary to save and restore that position.  This is at a minimum the position itself.
+This value may be useful only as
+the <i>pos</i> argument to <code>set-port-position!</code>, if the latter is
+even supported on the port (see below).
+However, if the port is binary and the object is an exact integer,
+then it is the position measured in bytes,
+and can be used to compute a new position some
+specified number of bytes away.
+</p>
 
-<div><code>(<a name="node_idx_658"></a>set-port-position!<i> port pos</i>)</code><span style="margin-left: .5em">&zwnj;</span><span style="margin-left: .5em">&zwnj;</span>procedure&nbsp;</div>
-<p>If <i>port</i> is a binary port, it is an error unless <i>pos</i>
-is a non-negative exact integer.  If <i>port</i> is a textual port,
-it is implementation-defined what happens if <i>pos</i> is not
- the return value of a call to <code>port-position</code> on <i>port</i>.</p>
+<div><code>(<a name="node_idx_656"></a>port-has-set-port-position!?<i> port</i>)</code>
+
+<div><code>(<a name="node_idx_658"></a>set-port-position!<i> port pos</i>)</code>
+<p>For a textual port, it is implementation-defined what happens if <i>pos</i> is not
+the return value of a call to <code>port-position</code> on <i>port</i>.
+However, a binary port will also accept an exact integer,
+in which case the port position is set to the specified number of bytes
+from the beginning of the port data.
+If this is not sufficient information to specify the port state,
+an error is signaled.
+</p>
 <p>The <code>port-has-set-port-position!?</code> procedure returns <code>#t</code> if the port
 supports the <code>set-port-position!</code> operation, and <code>#f</code>
 otherwise.</p>
@@ -111,10 +119,11 @@ in the underlying object is an error.</p>
 
 <p>Every conforming R6RS implementation, including at least Chez,
 Guile, IronScheme, Larceny, Racket, and Vicare, provides these
-procedures in the <code>(rnrs io ports)</code> library.</p>
+procedures in the <code>(rnrs io ports)</code> library.
+R6RS binary ports always return the port position as an exact integer.
 
 <p>A portable implementation is not possible, but Shiro Kawai has
-provided a sample implementation that illustates both SRFI 181 and
+provided a sample implementation for Gauche that illustates both SRFI 181 and
 SRFI 192.  It can be found in the <a
 href="https://github.com/scheme-requests-for-implementation/srfi-192">Git
 repository</a> for SRFI 192 and in <a
@@ -128,8 +137,7 @@ who produced a good-enough (as opposed to perfect) design that John
 was happy to adopt.</p>
 
 <h1>Copyright</h1>
-John Cowan does not claim copyright on his <i>de minimis</i> contributions
-to this SRFI.  Its content is drawn almost entirely from R6RS,
+Much of the content of this SRFI is drawn from R6RS,
 which does not have a copyright notice.
 It does, however, contain the following copyright license:</p>
 
@@ -138,8 +146,7 @@ We intend this report to belong to the entire Scheme community, and so we grant 
 part without fee.
 </blockquote>
 
-<p>Nevertheless, in order to keep the lawyers happy, the standard
-SRFI license is subjoined:</p>
+<p>For the remaining content, the standard SRFI license applies:</p>
 
 <blockquote>
   Permission is hereby granted, free of charge, to any person
