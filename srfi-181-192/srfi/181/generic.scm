@@ -32,7 +32,19 @@
   (closer custom-port-closer)
   (flusher custom-port-flusher))
 
+(define-record-type custom-port-file-error
+  (%make-custom-port-file-error objs)
+  custom-port-file-error?
+  (objs custom-port-file-error-objs))
+
 (define (boolean x) (not (not x)))
+
+;;
+;; Custom port internal interface
+;;
+;; (srfi 181 adapter) dispatches R7RS file operations on custom ports to
+;; these internal APIs.
+;;
 
 (define (custom-port-has-port-position? port)
   (assume (custom-port? port))
@@ -152,6 +164,10 @@
   (let ((flusher (custom-port-flusher port)))
     (and flusher (flusher))))
 
+;;
+;; SRFI-181 public API
+;;
+
 (define (make-custom-binary-input-port id read!
                                        get-position set-position!
                                        close)
@@ -204,3 +220,6 @@
                        set-position!
                        close
                        flush)))
+
+(define (make-file-error . objs)
+  (%make-custom-port-file-error objs))

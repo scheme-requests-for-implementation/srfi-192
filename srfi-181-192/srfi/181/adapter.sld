@@ -38,6 +38,7 @@
           (rename cp:write-u8 write-u8)
           (rename cp:write-bytevector write-bytevector)
           (rename cp:flush-output-port flush-output-port)
+          (rename cp:file-error? file-error?)
           )
   (include "adapter.scm")
   )

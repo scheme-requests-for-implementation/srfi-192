@@ -23,10 +23,12 @@
           custom-port-write-char
           custom-port-close
           custom-port-flush
+          custom-port-file-error?
 
           make-custom-binary-input-port
           make-custom-textual-input-port
           make-custom-binary-output-port
           make-custom-textual-output-port
-          make-custom-binary-input/output-port)
+          make-custom-binary-input/output-port
+          make-file-error)
   (include "generic.scm"))

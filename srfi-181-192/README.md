@@ -18,7 +18,8 @@ were another kind of port:
                     read-string read-u8 peek-u8 u8-ready?
                     read-bytevector read-bytevector!
                     write-char write-string write-u8
-                    write-bytevector flush-output-port)
+                    write-bytevector flush-output-port
+                    file-error?)
             (srfi 181 adapter)   ;; includes read and write
             (srfi 181))
 
