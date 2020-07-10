@@ -32,15 +32,25 @@ A sample implementation for Gauche is also provided, using its own
 custom port layer `(gauche.vport)`.  However, Gauche's `vport` lacks
 some functionality to fully support SRFI 181.
 
-Note on `peek-char` / `peek-u8`
----------------------------
 
-Draft #5 omitted `peek-char`/`u8` to avoid complications of port position
-tracking.  However, one-character look-ahead is needed to implement `read`
-and `read-line`, so at least the custom textual port needs to have some
-sort of peek functionality internally, even if it doesn't export the feature.
+Note on `peek-char`/`peek-u8`
+-------------------------
 
-For now, I keep them in the library.
+Implementers need to be aware that `peek-char` / `peek-u8` requires buffering
+in the custom port, so the port-position (where the next read or write
+operation on the port occurs) and what `get-position` callback returns (where
+the next `read!` callback reads from, or next `write!` callback writes to)
+may differ.  The test code includes testing such subtleties.
+
+The reference implementation adopts peek opertaions by (1) calling `get-position`
+callback to remember the current underlying position, (2) calling `read!`
+callback to fetch the data and buffer it, then (3) returning the fetched
+data.  When `port-position` is called then, it returns the cached
+position, instead of delegating it to `get-position` callback.
+
+There may be different ways to implement it.  Just keep in mind that
+letting `port-position` always call `get-position` won't work.
+
 
 
 Note on transcoded port implementation
