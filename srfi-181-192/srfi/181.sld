@@ -4,6 +4,7 @@
           make-custom-binary-output-port
           make-custom-textual-output-port
           make-custom-binary-input/output-port
+          make-file-error
 
           make-codec latin-1-codec utf-8-codec utf-16-codec
           native-eol-style

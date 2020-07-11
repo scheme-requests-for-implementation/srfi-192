@@ -15,7 +15,7 @@
                          read-string read-u8 peek-u8 u8-ready?
                          read-bytevector read-bytevector!
                          write-char write-string write-u8
-                         write-bytevector flush-output-port)
+                         write-bytevector flush-output-port file-error?)
                  (srfi 1)
                  (srfi 130)
                  (except (chibi test) test-equal)
@@ -388,6 +388,10 @@
  )
 
 )) ; cond expand
+
+(test-group
+ "file-error"
+ (test-assert "file-error" (file-error? (make-file-error "bad"))))
 
 (test-group
  "high-level i/o"
