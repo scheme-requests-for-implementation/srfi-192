@@ -105,6 +105,10 @@
            ((input-port? port) (u8-ready? port))
            (else (error "input port expected, got" port))))))
 
+(define (cp:file-error? obj)
+  (or (file-error? obj)
+      (custom-port-file-error? obj)))
+
 ;;;
 ;;; Derived operations
 ;;;

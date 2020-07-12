@@ -10,7 +10,7 @@
                   read-string read-u8 peek-u8 u8-ready?
                   read-bytevector read-bytevector!
                   write-char write-string write-u8
-                  write-bytevector flush-output-port)
+                  write-bytevector flush-output-port file-error?)
           (scheme char)
           (scheme list)
           (srfi 181 adapter)

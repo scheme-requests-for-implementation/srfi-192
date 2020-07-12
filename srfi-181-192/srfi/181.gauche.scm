@@ -101,3 +101,11 @@
     :seek (make-seeker get-position set-position!)
     :flush (^[] (and flush (flush)))
     :close close))
+
+(define (make-file-error . objs)
+  ;; Up to 0.9.9, Gauche uses ad-hoc way to determine file-error--
+  ;; that is, a <system-error> with certain errnos is a file error. 
+  ;; It is impossible to translate arbitrary objs into meaningful 
+  ;; <system-error>.  This is just a crude emulation.
+  (condition
+   (<system-error> (errno ENXIO) (message (write-to-string objs)))))
