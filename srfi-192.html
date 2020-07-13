@@ -118,8 +118,13 @@ current end of data in the underlying object, an error satisfying
 <code>i/o-invalid-position-error?</code> is signaled.
 </p>
 
+<div><code>(<a name="node_idx_656"></a>make-i/o-invalid-position-error<i> pos</i>)</code>
+<p>Returns a condition object which satisfies
+<code>i/o-invalid-position-error</code>.  The <i>pos</i> argument
+represents a position passed to <code>set-position!</code>.</p>
 <div><code>(<a name="node_idx_656"></a>i/o-invalid-position-error?<i> obj</i>)</code>
-<p>Returns <code>#t</code> if <i>obj</i> is an object raised in the
+<p>Returns <code>#t</code> if <i>obj</i> is an object created by
+<code>make-i/o-invalid-position-error</code> or an object raised in the
 circumstances described in this SRFI, or <code>#f</code> if it is not.
 </p>
 
