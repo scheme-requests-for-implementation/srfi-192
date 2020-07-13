@@ -93,7 +93,8 @@ However, a binary port will also accept an exact integer,
 in which case the port position is set to the specified number of bytes
 from the beginning of the port data.
 If this is not sufficient information to specify the port state,
-an error is signaled.
+or the specified position is uninterpretable by the port,
+an error satisfying <code>i/o-invalid-position-error?</code> is signaled.
 </p>
 <p>The <code>port-has-set-port-position!?</code> procedure returns <code>#t</code> if the port
 supports the <code>set-port-position!</code> operation, and <code>#f</code>
@@ -110,11 +111,22 @@ port, <code>set-port-position!</code> first flushes <i>port</i>
 beyond the current end of the data in the underlying data sink, the object is
 not extended until new data is written at that position.
 The contents of any intervening positions are unspecified.
-Binary ports created by <code>open-file-output-port</code> and
-<code>open-file-input/output-port</code> can always be extended in this manner
+File ports can always be extended in this manner
 within the limits of the underlying operating system.
-In other cases, attempts to set the port beyond the current end of data
-in the underlying object is an error.</p>
+In other cases, if an attempt is made to set the port beyond the
+current end of data in the underlying object, an error satisfying
+<code>i/o-invalid-position-error?</code> is signaled.
+</p>
+
+<div><code>(<a name="node_idx_656"></a>make-i/o-invalid-position-error<i> pos</i>)</code>
+<p>Returns a condition object which satisfies
+<code>i/o-invalid-position-error</code>.  The <i>pos</i> argument
+represents a position passed to <code>set-position!</code>.</p>
+<div><code>(<a name="node_idx_656"></a>i/o-invalid-position-error?<i> obj</i>)</code>
+<p>Returns <code>#t</code> if <i>obj</i> is an object created by
+<code>make-i/o-invalid-position-error?</code> or an object raised in the
+circumstances described in this SRFI, or <code>#f</code> if it is not.
+</p>
 
 <h1>Implementation</h1>
 
