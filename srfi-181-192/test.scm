@@ -394,6 +394,12 @@
  (test-assert "file-error" (file-error? (make-file-error "bad"))))
 
 (test-group
+ "i/o-invalid-position-error"
+ (test-assert "i/o-invalid-position-error" 
+              (i/o-invalid-position-error? 
+               (make-i/o-invalid-position-error 0))))
+
+(test-group
  "high-level i/o"
  (define source
    (let ((orig "((a b c . d)
