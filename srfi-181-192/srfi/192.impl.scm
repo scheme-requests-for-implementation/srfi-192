@@ -17,3 +17,8 @@
 
 (define (set-port-position! port pos)
   (custom-port-set-port-position! port pos))
+
+(define-record-type i/o-invalid-position-error
+  (make-i/o-invalid-position-error position)
+  i/o-invalid-position-error?
+  (position i/o-invalid-position-error-position))
