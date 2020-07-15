@@ -3,7 +3,9 @@
   (export port-has-port-position?
           port-position
           port-has-set-port-position!?
-          set-port-position!)
+          set-port-position!
+          i/o-invalid-position-error?
+          make-i/o-invalid-position-error)
   (cond-expand
    (gauche
     (import (scheme base)
