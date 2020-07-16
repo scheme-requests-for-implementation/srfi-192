@@ -113,9 +113,12 @@ port, <code>set-port-position!</code> first flushes <i>port</i>
 beyond the current end of the data in the underlying data sink, the object is
 not extended until new data is written at that position.
 The contents of any intervening positions are unspecified.
+It is also possible to set the position of an binary input port 
+beyond the end of the data in the data source,
+but a read will fail unless the data has been extended by other means.
 File ports can always be extended in this manner
 within the limits of the underlying operating system.
-In other cases, if an attempt is made to set the port beyond the
+In other types of ports, if an attempt is made to set the position beyond the
 current end of data in the underlying object, an error satisfying
 <code>i/o-invalid-position-error?</code> is signaled.
 </p>
