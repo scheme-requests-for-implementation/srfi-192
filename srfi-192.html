@@ -12,7 +12,7 @@
     <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI logo" /></a>192: Port Positioning</h1>
 
 <p>by The R6RS editors; John Cowan (shepherd);
-Shiro Kawai (implementation; requires a hook)</i></p>
+Shiro Kawai (implementation; requires a hook)</p>
 
   <h2>Status</h2>
 
@@ -62,9 +62,9 @@ it is not appropriate for all custom ports to do so.</p>
 
 <h2>Specification</h2>
 
-<div><code>(<a name="node_idx_652"></a>port-has-port-position?<i> port</i>)</code>
+<code id="port-has-port-position?">(port-has-port-position?<i> port</i>)</code>
 
-<div><code>(<a name="node_idx_654"></a>port-position<i> port</i>)</code>
+<code id="port-position">(port-position<i> port</i>)</code>
 <p>The <code>port-has-port-position?</code> procedure returns <code>#t</code> if the
 port supports the <code>port-position</code> operation, and <code>#f</code>
 otherwise.  If the port does not support the operation, <code>port-position</code> signals
@@ -81,9 +81,9 @@ and can be used to compute a new position some
 specified number of bytes away.
 </p>
 
-<div><code>(<a name="node_idx_656"></a>port-has-set-port-position!?<i> port</i>)</code>
+<code id="port-has-set-port-position!?">(port-has-set-port-position!?<i> port</i>)</code>
 
-<div><code>(<a name="node_idx_658"></a>set-port-position!<i> port pos</i>)</code>
+<code id="set-port-position!">(set-port-position!<i> port pos</i>)</code>
 <p>For a textual port, it is implementation-defined what happens if <i>pos</i> is not
 the return value of a call to <code>port-position</code> on <i>port</i>.
 However, a binary port will also accept an exact integer,
@@ -118,11 +118,11 @@ current end of data in the underlying object, an error satisfying
 <code>i/o-invalid-position-error?</code> is signaled.
 </p>
 
-<div><code>(<a name="node_idx_656"></a>make-i/o-invalid-position-error<i> pos</i>)</code>
+<code id="make-i/o-invalid-position-error">(make-i/o-invalid-position-error<i> pos</i>)</code>
 <p>Returns a condition object which satisfies
 <code>i/o-invalid-position-error</code>.  The <i>pos</i> argument
 represents a position passed to <code>set-position!</code>.</p>
-<div><code>(<a name="node_idx_656"></a>i/o-invalid-position-error?<i> obj</i>)</code>
+<code id="i/o-invalid-position-error?">(i/o-invalid-position-error?<i> obj</i>)</code>
 <p>Returns <code>#t</code> if <i>obj</i> is an object created by
 <code>make-i/o-invalid-position-error?</code> or an object raised in the
 circumstances described in this SRFI, or <code>#f</code> if it is not.
@@ -153,7 +153,7 @@ who produced a good-enough (as opposed to perfect) design that John
 was happy to adopt.</p>
 
 <h2>Copyright</h2>
-Much of the content of this SRFI is drawn from R6RS,
+<p>Much of the content of this SRFI is drawn from R6RS,
 which does not have a copyright notice.
 It does, however, contain the following copyright license:</p>
 
