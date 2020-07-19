@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title>SRFI 192: Port Positioning</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/srfi.css" type="text/css" />
-    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png" />
+    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
+    <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 
   <body>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI logo" /></a>192: Port Positioning</h1>
 
-<h1>Title</h1>
-
-Port Positioning
-
-<h1>Author</h1>
-
-<p>The R6RS editors; John Cowan (shepherd);
+<p>by The R6RS editors; John Cowan (shepherd);
 Shiro Kawai (implementation; requires a hook)</i></p>
 
-  <h1>Status</h1>
+  <h2>Status</h2>
 
   <p>This SRFI is currently in <em>draft</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+192+at+srfi+dotschemers+dot+org">srfi-192@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-192">archive</a>.</p>
   <ul>
@@ -31,7 +26,7 @@ Shiro Kawai (implementation; requires a hook)</i></p>
     <li>Draft #4 published: 2020-07-13</li>
   </ul>
 
-<h1>Abstract</h1>
+<h2>Abstract</h2>
 
 <p>This is an extract from the R6RS that documents its support for
 positioning ports.  Binary ports can be positioned to read or write
@@ -39,11 +34,11 @@ at a specific byte; textual ports at a specific character,
 although character positions can't be synthesized portably.
 It has been lightly edited to fit R7RS style.</p>
 
-<h1>Issues</h1>
+<h2>Issues</h2>
 
 None at present.
 
-<h1>Rationale</h1>
+<h2>Rationale</h2>
 
 <p>The procedures documented in this SRFI allow reading bytes or characters
 from a port, especially a port associated with a file, in arbitrary order.
@@ -65,7 +60,7 @@ especially when transcoding operations are done in bulk.</p>
 have provisions for supporting port positioning,
 it is not appropriate for all custom ports to do so.</p>
 
-<h1>Specification</h1>
+<h2>Specification</h2>
 
 <div><code>(<a name="node_idx_652"></a>port-has-port-position?<i> port</i>)</code>
 
@@ -133,7 +128,7 @@ represents a position passed to <code>set-position!</code>.</p>
 circumstances described in this SRFI, or <code>#f</code> if it is not.
 </p>
 
-<h1>Implementation</h1>
+<h2>Implementation</h2>
 
 <p>Every conforming R6RS implementation, including at least Chez,
 Guile, IronScheme, Larceny, Racket, and Vicare, provides these
@@ -151,13 +146,13 @@ repository</a> for SRFI 192.
 <p>There is also a second sample implementation for Gauche
 using its native facilities, though it is incomplete.
 
-<h1>Acknowledgements</h1>
+<h2>Acknowledgements</h2>
 
 <p>This would have been much more difficult without the R6RS team,
 who produced a good-enough (as opposed to perfect) design that John
 was happy to adopt.</p>
 
-<h1>Copyright</h1>
+<h2>Copyright</h2>
 Much of the content of this SRFI is drawn from R6RS,
 which does not have a copyright notice.
 It does, however, contain the following copyright license:</p>
