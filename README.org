@@ -1,6 +1,6 @@
 * SRFI 192: Port Positioning
 
-** by John Cowan and Shiro Kawai ((implementation; requires a hook))
+** by John Cowan and Shiro Kawai (implementation; requires a hook)
 
 Based on R6RS.
 
