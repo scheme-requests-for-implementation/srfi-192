@@ -1,6 +1,6 @@
 * SRFI 192: Port Positioning
 
-** by John Cowan and Shiro Kawai
+** by John Cowan and Shiro Kawai ((implementation; requires a hook))
 
 Based on R6RS.
 
@@ -12,7 +12,7 @@ This repository hosts [[https://srfi.schemers.org/srfi-192/][SRFI 192]]: Port Po
 
 This SRFI is in /draft/ status.
 
-See also [[https://srfi.schemers.org/srfi-181/][SRFI 181: Custom ports]].
+See also [[https://srfi.schemers.org/srfi-181/][SRFI 181: Custom ports (including transcoded ports)]].
 
 The full documentation for this SRFI can be found in the [[https://srfi.schemers.org/srfi-192/srfi-192.html][SRFI Document]].
 
