@@ -114,8 +114,9 @@ but a read will fail unless the data has been extended by other means.
 File ports can always be extended in this manner
 within the limits of the underlying operating system.
 In other types of ports, if an attempt is made to set the position beyond the
-current end of data in the underlying object, an error satisfying
-<code>i/o-invalid-position-error?</code> is signaled.
+current end of data in the underlying object,
+and the object does not support extension,
+an error satisfying <code>i/o-invalid-position-error?</code> is signaled.
 </p>
 
 <code id="make-i/o-invalid-position-error">(make-i/o-invalid-position-error<i> pos</i>)</code>
