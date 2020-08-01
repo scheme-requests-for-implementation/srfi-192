@@ -38,12 +38,12 @@ Note on `peek-char`/`peek-u8`
 
 Implementers need to be aware that `peek-char` / `peek-u8` requires buffering
 in the custom port, so the port-position (where the next read or write
-operation on the port occurs) and what `get-position` callback returns (where
-the next `read!` callback reads from, or next `write!` callback writes to)
+operation on the port occurs) and what the `get-position` callback returns (where
+the next `read!` callback reads from, or the next `write!` callback writes to)
 may differ.  The test code includes testing such subtleties.
 
-The reference implementation adopts peek opertaions by (1) calling `get-position`
-callback to remember the current underlying position, (2) calling `read!`
+The reference implementation adopts peek operations by (1) calling the `get-position`
+callback to remember the current underlying position, (2) calling the `read!`
 callback to fetch the data and buffer it, then (3) returning the fetched
 data.  When `port-position` is called then, it returns the cached
 position, instead of delegating it to `get-position` callback.
@@ -56,7 +56,7 @@ letting `port-position` always call `get-position` won't work.
 Note on transcoded port implementation
 --------------------------------------
 
-The sample implementation of transcoded ports assumes internal
+The sample implementation of transcoded ports assumes an internal
 (native) encoding is ASCII.  This allows any Scheme implementation to
 try it out, but certain code paths are not tested (e.g. no character
 can raise `i/o-encoding-error`).  You can still use tests, but you may
