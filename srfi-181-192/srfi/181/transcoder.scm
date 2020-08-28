@@ -6,10 +6,10 @@
 ;;; MIT License.  See COPYING
 
 ;; supporting parts
-(define-record-type unknown-encoding
-  (make-unknown-encoding name)
-  unknown-encoding?
-  (name unknown-encoding-name))
+(define-record-type unknown-encoding-error
+  (make-unknown-encoding-error name)
+  unknown-encoding-error?
+  (name unknown-encoding-error-name))
 
 (define-record-type i/o-decoding-error
   (make-i/o-decoding-error message)
@@ -46,7 +46,7 @@
                            *supported-codecs*)))
     (if codec-entry
       (%make-codec (car codec-entry))
-      (raise (make-unknown-encoding name)))))
+      (raise (make-unknown-encoding-error name)))))
 
 (define *ascii-codec* (make-codec "ascii"))
 (define *latin-1-codec* (make-codec "latin-1"))
