@@ -8,6 +8,7 @@
 
           make-codec latin-1-codec utf-8-codec utf-16-codec
           native-eol-style
+          unknown-encoding? unknown-encoding-name
           i/o-decoding-error? i/o-encoding-error?
           i/o-encoding-error-char
           make-transcoder native-transcoder
