@@ -18,6 +18,7 @@
           (srfi 145))                   ;assume
   (export make-codec latin-1-codec utf-8-codec utf-16-codec
           native-eol-style
+          unknown-encoding-error? unknown-encoding-error-name
           i/o-decoding-error? i/o-encoding-error?
           i/o-encoding-error-char
           make-transcoder native-transcoder
