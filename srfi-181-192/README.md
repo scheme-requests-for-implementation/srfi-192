@@ -33,8 +33,18 @@ custom port layer `(gauche.vport)`.  However, Gauche's `vport` lacks
 some functionality to fully support SRFI 181.
 
 
+
+Examples
+--------
+
+The examples directory contains a positionable vector-backed custom port
+library to illustrate the use case of custom ports.
+
+
+
+
 Note on `peek-char`/`peek-u8`
--------------------------
+----------------------------
 
 Implementers need to be aware that `peek-char` / `peek-u8` requires buffering
 in the custom port, so the port-position (where the next read or write
