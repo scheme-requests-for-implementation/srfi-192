@@ -92,7 +92,7 @@
 (define *output-vectors* (cons #f '()))
 
 (cond-expand
- ((library (scheme ephemeronxx))
+ ((library (scheme ephemeron))
   (begin 
     (define weak-cons make-ephemeron)
     (define (weak-find key alis)
